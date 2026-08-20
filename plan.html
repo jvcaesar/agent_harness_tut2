@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agent Harness — Build Plan · 16 Steps · 5 Checkpoints</title>
+<title>Agent Harness — Build Plan · 19 Steps · 5 Checkpoints</title>
 <style>
 :root{
   --bg:#0a0e17; --bg2:#0f172a; --card:#111b2e; --card2:#0d1726;
@@ -52,7 +52,7 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
 .stat span{color:var(--muted);font-size:12px}
 .note{font-size:12px;color:var(--dim);margin:16px auto 0;max-width:660px}
 /* progress */
-.progress-card{background:linear-gradient(90deg,rgba(34,211,238,.07),rgba(45,212,191,.04),transparent),var(--card);border:1px solid var(--line);border-radius:15px;padding:17px 22px;margin-top:34px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow)}
+.progress-card{background:linear-gradient(90deg,rgba(34,211,238,.07),rgba(45,212,191,.04),transparent),var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-top:6px;box-shadow:var(--shadow)}
 .progress-fill-bg{height:11px;border-radius:999px;background:#0a0f1a;border:1px solid var(--line);overflow:hidden}
 .progress-fill{height:100%;width:0%;background:var(--grad);border-radius:999px;transition:width .45s ease}
 .progress-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px;color:var(--muted);flex-wrap:wrap}
@@ -91,7 +91,7 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
 .step-items li::marker{color:var(--c)}
 /* checkpoint banner */
 .checkpoint{position:relative;margin:12px 0 10px;border:1px solid rgba(251,191,36,.5);background:linear-gradient(135deg,rgba(251,191,36,.11),rgba(239,68,68,.07),transparent 65%),var(--card2);border-radius:16px;padding:20px 22px 18px;overflow:hidden;box-shadow:0 0 0 1px rgba(251,191,36,.08),var(--shadow)}
-.checkpoint::before{content:"🛑";position:absolute;right:8px;top:-8px;font-size:96px;opacity:.08;transform:rotate(-10deg)}
+.checkpoint::before{content:"🛑";position:absolute;right:8px;top:-8px;font-size:96px;opacity:.08;transform:rotate(12deg)}
 .cp-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
 .cp-badge{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#221100;font-weight:800;font-size:11.5px;letter-spacing:1.4px;padding:5px 12px;border-radius:8px;text-transform:uppercase}
 .cp-when{font-size:12px;color:var(--amber);font-weight:600}
@@ -126,19 +126,18 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
 </head>
 <body>
 <div class="topbar"><div class="wrap topbar-in">
-  <div class="brand"><div class="logo">🛰️</div><div><div class="brand-title">agent_harness-tut2</div><div class="brand-sub">Build Plan · 16 steps · 5 gates</div></div></div>
+  <div class="brand"><div class="logo">🛰️</div><div><div class="brand-title">agent_harness-tut2</div><div class="brand-sub">Build Plan · 19 steps · 5 gates</div></div></div>
   <nav><a href="#overview">Overview</a><a href="#phases">Phases</a><a href="#checkpoints">Checkpoints</a><a href="#roadmap">Roadmap</a><a href="#validate">Final check</a></nav>
 </div></div>
-
 <header class="hero" id="overview"><div class="wrap">
   <div class="eyebrow">Implementation blueprint · mark progress live</div>
   <h1>From stubs to a <span class="grad">working agent harness</span></h1>
-  <p>The 9 stub modules &rarr; a testable, offline-demonstrable Python agent harness. Work is routed through <strong>5 checkpoints</strong> — amber gates where <em>you</em> verify the artifacts before I keep building.</p>
+  <p>The 9 stub modules &rarr; a testable, offline-demonstrable, installable Python agent harness. Work is routed through <strong>5 checkpoints</strong> — amber gates where <em>you</em> verify the artifacts before I keep building.</p>
   <div class="stats">
-    <div class="stat"><b>16</b><span>implementation steps</span></div>
+    <div class="stat"><b>19</b><span>implementation steps</span></div>
     <div class="stat"><b>5</b><span>review checkpoints</span></div>
     <div class="stat"><b>5</b><span>phases</span></div>
-    <div class="stat"><b>0</b><span>new pip dependencies</span></div>
+    <div class="stat"><b>0</b><span>runtime pip deps</span></div>
   </div>
   <div class="note">▼ Click any step to tick it off. When you reach a <span style="color:var(--amber)">🛑 CHECKPOINT</span>, pause — that is exactly where I hand control back for your sign-off.</div>
 </div></header>
@@ -146,7 +145,7 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
 <section class="wrap">
   <div class="progress-card">
     <div class="progress-fill-bg"><div class="progress-fill" id="fill"></div></div>
-    <div class="progress-meta"><span id="progressText">0 / 16 steps completed</span><span>click a step to tick / untick</span><button id="resetBtn">Reset all</button></div>
+    <div class="progress-meta"><span id="progressText">0 / 19 steps completed</span><span>click a step to tick / untick</span><button id="resetBtn">Reset all</button></div>
   </div>
 </section>
 
@@ -158,18 +157,18 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
     <div class="ph-sep">▶</div>
     <div class="phase" style="--c:var(--p2)"><div class="ph-num">PHASE 02</div><div class="ph-name">Support modules</div><div class="ph-steps">Steps 4–8</div><p>Hooks · context · persistence · prompt · subagents</p></div>
     <div class="ph-sep">▶</div>
-    <div class="phase" style="--c:var(--p3)"><div class="ph-num">PHASE 03</div><div class="ph-name">Core engine</div><div class="ph-steps">Steps 9–11</div><p>Model protocol · Harness loop · public API</p></div>
+    <div class="phase" style="--c:var(--p3)"><div class="ph-num">PHASE 03</div><div class="ph-name">Engine + skills</div><div class="ph-steps">Steps 9–12</div><p>Model protocol · Harness loop · public API · skill layer</p></div>
     <div class="ph-sep">▶</div>
-    <div class="phase" style="--c:var(--p4)"><div class="ph-num">PHASE 04</div><div class="ph-name">Demo &amp; hardening</div><div class="ph-steps">Steps 12–13</div><p>The target project · error containment</p></div>
+    <div class="phase" style="--c:var(--p4)"><div class="ph-num">PHASE 04</div><div class="ph-name">Demo &amp; tests</div><div class="ph-steps">Steps 13–15</div><p>The target project · hardening · unittest suite</p></div>
     <div class="ph-sep">▶</div>
-    <div class="phase" style="--c:var(--p5)"><div class="ph-num">PHASE 05</div><div class="ph-name">Tests &amp; docs</div><div class="ph-steps">Steps 14–16</div><p>unittest suite · README · final validation</p></div>
+    <div class="phase" style="--c:var(--p5)"><div class="ph-num">PHASE 05</div><div class="ph-name">Packaging &amp; docs</div><div class="ph-steps">Steps 16–19</div><p>Deps · pyproject · README · final validation</p></div>
   </div>
   <div class="legend">
     <span><span class="gate-chip" style="background:var(--p1)"></span>Phase 1 · Foundations</span>
     <span><span class="gate-chip" style="background:var(--p2)"></span>Phase 2 · Support</span>
-    <span><span class="gate-chip" style="background:var(--p3)"></span>Phase 3 · Engine</span>
-    <span><span class="gate-chip" style="background:var(--p4)"></span>Phase 4 · Demo</span>
-    <span><span class="gate-chip" style="background:var(--p5)"></span>Phase 5 · Tests</span>
+    <span><span class="gate-chip" style="background:var(--p3)"></span>Phase 3 · Engine &amp; skills</span>
+    <span><span class="gate-chip" style="background:var(--p4)"></span>Phase 4 · Demo &amp; tests</span>
+    <span><span class="gate-chip" style="background:var(--p5)"></span>Phase 5 · Packaging</span>
     <span>🛑 Checkpoint &nbsp;= &nbsp;you decide before proceeding</span>
   </div>
 </section>
@@ -180,15 +179,14 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
     <div class="cp-card" style="--c:var(--amber)"><span class="cp-idx">CP-1</span><h3>Foundation contracts</h3><div class="cp-when">After Step 3 · end of Phase 1</div><p>Approve the tool signature (<span class="mono">handler(kwargs)→str</span>), the 3-tier permission map, and the bash command classification list.</p></div>
     <div class="cp-card" style="--c:var(--amber)"><span class="cp-idx">CP-2</span><h3>Model prompts &amp; heuristics</h3><div class="cp-when">After Step 8 · before the engine</div><p>Review the real system-prompt scaffold text, the context-compaction heuristic, and the 3 sub-agent preset prompts.</p></div>
     <div class="cp-card" style="--c:var(--amber)"><span class="cp-idx">CP-3</span><h3>Model scope</h3><div class="cp-when">After Step 9 · before the loop</div><p>Decide: offline <span class="mono">DummyModel</span> only, or also wire the optional OpenAI client now?</p></div>
-    <div class="cp-card" style="--c:var(--amber)"><span class="cp-idx">CP-4</span><h3>Demo sign-off</h3><div class="cp-when">After Step 12 · before testing</div><p>Confirm the planted bug, the <span class="mono">agent.md</span> instructions, goal copy, and offline vs live demo cadence.</p></div>
-    <div class="cp-card" style="--c:var(--green)"><span class="cp-idx">CP-5</span><h3>Final acceptance</h3><div class="cp-when">After step 16 · end of Phase 5</div><p>Everything green — you explore the demo yourself, sign off, and we close the loop.</p></div>
+    <div class="cp-card" style="--c:var(--amber)"><span class="cp-idx">CP-4</span><h3>Demo sign-off</h3><div class="cp-when">After Step 13 · before hardening</div><p>Confirm the planted bug, the <span class="mono">agent.md</span> instructions, goal copy, and offline vs live demo cadence.</p></div>
+    <div class="cp-card" style="--c:var(--green)"><span class="cp-idx">CP-5</span><h3>Final acceptance</h3><div class="cp-when">After step 19 · end of Phase 5</div><p>Everything green — you explore the demo and packaging yourself, sign off, and we close the loop.</p></div>
   </div>
 </section>
 <section class="wrap" id="roadmap">
   <h2 class="sec">🧭 Step-by-step roadmap</h2>
   <p class="lead">Click any step to tick it off (progress updates in the bar above). The amber <span class="mono">🛑 CHECKPOINT</span> banners are interleaved <em>between</em> steps — they mark the exact moment you should scrutinize the work before I continue.</p>
-
-  <div class="ph-band"><span class="lbl" style="--c:var(--p1)">Phase 01 · Foundations</span><span class="ln" style="background:linear-gradient(90deg,var(--p1),transparent)"></span></div>
+<div class="ph-band"><span class="lbl" style="--c:var(--p1)">Phase 01 · Foundations</span><span class="ln" style="background:linear-gradient(90deg,var(--p1),transparent)"></span></div>
   <div class="timeline">
     <article class="step" style="--c:var(--p1)">
       <div class="step-num">1</div>
@@ -197,7 +195,7 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
         <div class="step-title">🔐 Tiered permissions &amp; bash safety gate</div>
         <div class="step-tech"><span class="mono">Permission</span> read &lt; workspace &lt; full · fix <b>can_dispatch</b> so equal ranks are allowed (<span class="mono">&gt;</span> becomes <span class="mono">&gt;=</span>)</div>
         <ul class="step-items">
-          <li>Replace the stub's <span class="mono">...</span> placeholders in <span class="mono">_READ_CMDS</span> /<span class="mono">_DANGER_CMDS</span></li>
+          <li>Replace the stub's <span class="mono">...</span> placeholders in <span class="mono">_READ_CMDS</span> / <span class="mono">_DANGER_CMDS</span></li>
           <li>Unknown / unlisted permission levels are now denied by default</li>
           <li><span class="mono">python -m unittest</span>, <span class="mono">ls</span>, <span class="mono">cat</span> → workspace or lower; <span class="mono">rm</span>, <span class="mono">sudo</span>, <span class="mono">dd</span> → full</li>
         </ul>
@@ -231,8 +229,6 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
         </ul>
       </div>
     </article>
-  </div>
-</div>
 <aside class="checkpoint" id="cp1">
       <div class="cp-top"><span class="cp-badge">🛑 Checkpoint 01</span><span class="cp-when">Gate · after Step 3 — before Phase 2</span></div>
       <div class="cp-grid-inner">
@@ -245,12 +241,11 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
             <li>The five primitives and their exact signatures — these are stable forever from here on</li>
           </ul>
         </div>
-        <div class="cp-why"><b>Why pause here</b>This is the boot layer. The Harness loop (Step 10) and the whole test suite (Step 14) are built directly on these contracts. A signature change now costs one edit; the same change after Step 10 touches the loop, hooks, model, and every test file.</div>
+        <div class="cp-why"><b>Why pause here</b>This is the boot layer. The Harness loop (Step 10) and the whole test suite (Step 15) are built directly on these contracts. A signature change now costs one edit; the same change after Step 10 touches the loop, hooks, model, and every test file.</div>
       </div>
       <button class="cp-cta" data-cp="cp1">✔ Approved — continue to Step 4</button>
     </aside>
-
-  <div class="ph-band"><span class="lbl" style="--c:var(--p2)">Phase 02 · Support modules</span><span class="ln" style="background:linear-gradient(90deg,var(--p2),transparent)"></span></div>
+<div class="ph-band"><span class="lbl" style="--c:var(--p2)">Phase 02 · Support modules</span><span class="ln" style="background:linear-gradient(90deg,var(--p2),transparent)"></span></div>
 
     <article class="step" style="--c:var(--p2)">
       <div class="step-num">4</div>
@@ -311,15 +306,15 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
       <div class="step-num">8</div>
       <div class="step-body">
         <div class="step-meta"><span class="pill ph">Phase 2 · Fix</span><span class="step-file">harness/subagents.py</span></div>
-        <div class="step-title">Sub-agent archetypes + registry</div>
-        <div class="step-tech"><span class="mono">SubAgentSpec(name, permission, tools, system_prompt)</span> + get/names/all</div>
+        <div class="step-title">Sub-agent archetypes + registry &amp; spawn</div>
+        <div class="step-tech"><span class="mono">SubAgentSpec(name, permission, tools, system_prompt)</span> + get/names/all + <span class="mono">get_spec()</span>/<span class="mono">spawn()</span></div>
         <ul class="step-items">
           <li>Fix the stub's undefined <span class="mono">SubAgentSpec</span>/<span class="mono">Permission</span> refs and <span class="mono">READONLY</span> → <span class="mono">READ_ONLY</span></li>
           <li><span class="mono">explore</span> (read-only recon) · <span class="mono">general</span> (workspace) · <span class="mono">verify</span> (read + bash to confirm fixes pass tests)</li>
+          <li><span class="mono">spawn(name, goal)</span> returns a ready-to-run spec + goal prompt</li>
         </ul>
       </div>
     </article>
-  </div>
 
   <aside class="checkpoint" id="cp2">
     <div class="cp-top"><span class="cp-badge">🛑 Checkpoint 02</span><span class="cp-when">Gate · after Step 8 — before the engine</span></div>
@@ -337,7 +332,7 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
     </div>
     <button class="cp-cta" data-cp="cp2">✔ Approved — continue to Step 9</button>
   </aside>
-<div class="ph-band"><span class="lbl" style="--c:var(--p3)">Phase 03 · Core engine</span><span class="ln" style="background:linear-gradient(90deg,var(--p3),transparent)"></span></div>
+<div class="ph-band"><span class="lbl" style="--c:var(--p3)">Phase 03 · Core engine + skill layer</span><span class="ln" style="background:linear-gradient(90deg,var(--p3),transparent)"></span></div>
 
     <article class="step" style="--c:var(--p3)">
       <div class="step-num">9</div>
@@ -347,7 +342,7 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
         <div class="step-tech"><span class="mono">Model</span> protocol · <span class="mono">end_turn()</span>/<span class="mono">tool_call()</span> builders</div>
         <ul class="step-items">
           <li><span class="mono">DummyModel</span> is scripted &amp; deterministic — tests and the demo run with <b>zero API keys</b></li>
-          <li>Optional <span class="mono">OpenAIModel</span> exists but only activates behind an env var</li>
+          <li>Optional <span class="mono">OpenAIModel</span> exists but only activates when <span class="mono">openai</span> is installed and <span class="mono">OPENAI_API_KEY</span> is set</li>
         </ul>
       </div>
     </article>
@@ -360,15 +355,14 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
           <ul class="cp-list">
             <li><b>Option A (default):</b> offline <span class="mono">DummyModel</span> only — zero keys, fully scripted, enough to prove the harness end-to-end.</li>
             <li><b>Option B:</b> also wire <span class="mono">OpenAIModel</span> now — enables live runs but adds a runtime dependency and needs a key in your environment.</li>
-            <li>Either way the <span class="mono">Model</span> protocol stays identical, so this is a cheap toggle — but it shapes what Step 12's demo attempts.</li>
+            <li>Either way the <span class="mono">Model</span> protocol stays identical, so this is a cheap toggle — but it shapes what Step 13's demo attempts.</li>
           </ul>
         </div>
-        <div class="cp-why"><b>Why pause here</b>This is the <em>one</em> point where adding a live provider is cheapest. If we build the demo (Step 12) as offline-only and you later want live, it's an add-on rather than a rebuild — but you may also prefer to keep the repo dependency-free forever. Decisions like that are yours.</div>
+        <div class="cp-why"><b>Why pause here</b>This is the <em>one</em> point where adding a live provider is cheapest. If we build the demo (Step 13) as offline-only and you later want live, it's an add-on rather than a rebuild — but you may also prefer to keep the repo dependency-free forever. Decisions like that are yours.</div>
       </div>
       <button class="cp-cta" data-cp="cp3">✔ Approved — continue to Step 10</button>
     </aside>
-
-    <article class="step" style="--c:var(--p3)">
+<article class="step" style="--c:var(--p3)">
       <div class="step-num">10</div>
       <div class="step-body">
         <div class="step-meta"><span class="pill ph">Phase 3 · Build</span><span class="step-file">harness/loop.py</span></div>
@@ -389,15 +383,29 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
         <div class="step-title">Public API surface</div>
         <div class="step-tech">one clean <span class="mono">import harness</span> entry point</div>
         <ul class="step-items">
-          <li>Export <span class="mono">Harness, ContextManager, ToolRegistry, register_core_tools, Permission, classify_bash, can_dispatch, Hooks, HookContext, SessionPersistence, assemble_system_prompt, SubAgentRegistry, SubAgentSpec, DummyModel, Model</span></li>
+          <li>Export <span class="mono">Harness, ContextManager, Tool, ToolRegistry, register_core_tools, Hooks, HookContext, Permission, classify_bash, can_dispatch, SessionPersistence, assemble_system_prompt, SubAgentRegistry, SubAgentSpec, DummyModel, Model</span></li>
           <li>Set <span class="mono">__version__ = "0.1.0"</span></li>
         </ul>
       </div>
     </article>
-<div class="ph-band"><span class="lbl" style="--c:var(--p4)">Phase 04 · Demo &amp; hardening</span><span class="ln" style="background:linear-gradient(90deg,var(--p4),transparent)"></span></div>
+
+    <article class="step" style="--c:var(--p3)">
+      <div class="step-num">12</div>
+      <div class="step-body">
+        <div class="step-meta"><span class="pill ph">Phase 3 · Build</span><span class="step-file">harness/tools.py · skill layer</span></div>
+        <div class="step-title">Skills — markdown-composed tools <em>&nbsp;(now in scope)</em></div>
+        <div class="step-tech"><span class="mono">Skill</span> dataclass · <span class="mono">register_skill(name, md_path)</span> · read <span class="mono">.md</span> at invocation</div>
+        <ul class="step-items">
+          <li>Compose existing primitives into a new callable backed by a markdown skill definition</li>
+          <li>Expose skills to the model via <span class="mono">descriptors()</span> / <span class="mono">skill_descriptors()</span></li>
+          <li>Invoked through the same registry + permission gate as regular tools</li>
+        </ul>
+      </div>
+    </article>
+<div class="ph-band"><span class="lbl" style="--c:var(--p4)">Phase 04 · Demo &amp; tests</span><span class="ln" style="background:linear-gradient(90deg,var(--p4),transparent)"></span></div>
 
     <article class="step" style="--c:var(--p4)">
-      <div class="step-num">12</div>
+      <div class="step-num">13</div>
       <div class="step-body">
         <div class="step-meta"><span class="pill ph">Phase 4 · Demo</span><span class="step-file">demo/</span></div>
         <div class="step-title">The target project — what the agent edits</div>
@@ -411,7 +419,7 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
     </article>
 
     <aside class="checkpoint" id="cp4">
-      <div class="cp-top"><span class="cp-badge">🛑 Checkpoint 04</span><span class="cp-when">Gate · after Step 12 — before the test suite</span></div>
+      <div class="cp-top"><span class="cp-badge">🛑 Checkpoint 04</span><span class="cp-when">Gate · after Step 13 — before hardening &amp; tests</span></div>
       <div class="cp-grid-inner">
         <div>
           <h4>You verify — the demo story</h4>
@@ -424,11 +432,11 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
         </div>
         <div class="cp-why"><b>Why pause here</b>This is the first moment you can <em>run</em> the finished harness by hand. Settle the story (bug, goal, demo cadence) before we write the automated tests that lock it in — otherwise the suite just bakes in something you didn't want to show.</div>
       </div>
-      <button class="cp-cta" data-cp="cp4">✔ Approved — continue to Step 13</button>
+      <button class="cp-cta" data-cp="cp4">✔ Approved — continue to Step 14</button>
     </aside>
 
     <article class="step" style="--c:var(--p4)">
-      <div class="step-num">13</div>
+      <div class="step-num">14</div>
       <div class="step-body">
         <div class="step-meta"><span class="pill ph">Phase 4 · Harden</span><span class="step-file">harness/</span></div>
         <div class="step-title">Error containment &amp; safety net</div>
@@ -440,57 +448,89 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
         </ul>
       </div>
     </article>
-<div class="ph-band"><span class="lbl" style="--c:var(--p5)">Phase 05 · Tests &amp; docs</span><span class="ln" style="background:linear-gradient(90deg,var(--p5),transparent)"></span></div>
 
-    <article class="step" style="--c:var(--p5)">
-      <div class="step-num">14</div>
+    <article class="step" style="--c:var(--p4)">
+      <div class="step-num">15</div>
       <div class="step-body">
-        <div class="step-meta"><span class="pill ph">Phase 5 · Tests</span><span class="step-file">tests/test_harness.py</span></div>
+        <div class="step-meta"><span class="pill ph">Phase 4 · Tests</span><span class="step-file">tests/test_harness.py</span></div>
         <div class="step-title">Test suite — unittest, no new deps</div>
         <div class="step-tech">validates every component + full integration paths</div>
         <ul class="step-items">
           <li>Primitives round-trips · registry · compaction · hooks allow/deny · persistence replay</li>
-          <li>Prompt assembly incl. ancestor walk · subagent presets · DummyModel shapes</li>
+          <li>Prompt assembly incl. ancestor walk · subagent presets &amp; spawn · DummyModel shapes</li>
+          <li>Skill layer: register a markdown skill and invoke through the registry</li>
           <li>End-to-end: scripted <span class="mono">read → edit → unittest → end_turn</span>, plus a permission-denial path</li>
-          <li>Bash classification: <span class="mono">echo</span> vs <span class="mono">rm</span>-style danger commands</li>
+          <li>Bash classification: <span class="mono">echo</span> vs <span class="mono">rm</span>-style danger commands · delete <span class="mono">demo/stub.py</span> &amp; <span class="mono">tests/stub.py</span></li>
+        </ul>
+      </div>
+    </article>
+<div class="ph-band"><span class="lbl" style="--c:var(--p5)">Phase 05 · Packaging &amp; docs</span><span class="ln" style="background:linear-gradient(90deg,var(--p5),transparent)"></span></div>
+
+    <article class="step" style="--c:var(--p5)">
+      <div class="step-num">16</div>
+      <div class="step-body">
+        <div class="step-meta"><span class="pill ph">Phase 5 · Package</span><span class="step-file">requirements.txt · now in scope</span></div>
+        <div class="step-title">Pin runtime + dev dependencies</div>
+        <div class="step-tech">harness core stays stdlib-only · dev: <span class="mono">pytest</span> · optional: <span class="mono">openai</span> (commented)</div>
+        <ul class="step-items">
+          <li>Runtime line: <span class="mono">-e .</span> — the harness itself needs zero third-party packages</li>
+          <li>Dev pins: <span class="mono">pytest</span> for the optional Phase-5 runner</li>
+          <li>Optional <span class="mono">openai</span> commented out — only for live-model mode</li>
         </ul>
       </div>
     </article>
 
     <article class="step" style="--c:var(--p5)">
-      <div class="step-num">15</div>
+      <div class="step-num">17</div>
+      <div class="step-body">
+        <div class="step-meta"><span class="pill ph">Phase 5 · Package</span><span class="step-file">pyproject.toml (+ conftest.py if needed)</span></div>
+        <div class="step-title">Project metadata + package discovery</div>
+        <div class="step-tech"><span class="mono">pip install -e .</span> works · pytest collects from root</div>
+        <ul class="step-items">
+          <li><span class="mono">[build-system]</span> + <span class="mono">[project]</span> metadata + <span class="mono">[tool.setuptools]</span> discovery for <span class="mono">harness</span></li>
+          <li>Root <span class="mono">conftest.py</span> / <span class="mono">pytest.ini_options.pythonpath = ["."]</span> so pytest imports the package</li>
+          <li>Verify: <span class="mono">pip install -e .</span> succeeds and <span class="mono">pytest -q</span> runs from the project root</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="step" style="--c:var(--p5)">
+      <div class="step-num">18</div>
       <div class="step-body">
         <div class="step-meta"><span class="pill ph">Phase 5 · Docs</span><span class="step-file">README.md</span></div>
         <div class="step-title">README — bring it back to reality</div>
         <ul class="step-items">
           <li>Replace the &ldquo;stubs, not runnable&rdquo; status with the finished component map</li>
           <li>Flatten the structure diagram (no <span class="mono">build/</span> wrapper)</li>
-          <li>Add quickstart: <span class="mono">python demo/run_demo.py</span> and the test command</li>
+          <li>Add quickstart: <span class="mono">python demo/run_demo.py</span>, the test command, and <span class="mono">pip install -e .</span> / <span class="mono">pytest</span></li>
         </ul>
       </div>
     </article>
 
     <article class="step" style="--c:var(--p5)">
-      <div class="step-num">16</div>
+      <div class="step-num">19</div>
       <div class="step-body">
-        <div class="step-meta"><span class="pill ph">Phase 5 · Validate</span><span class="step-file">run these three</span></div>
+        <div class="step-meta"><span class="pill ph">Phase 5 · Validate</span><span class="step-file">run these five</span></div>
         <div class="step-title">Final validation gate</div>
         <ul class="step-items">
           <li><span class="mono">python -m unittest discover -s tests -v</span> → all green</li>
           <li><span class="mono">python demo/run_demo.py</span> → prints the fixed file + session events</li>
           <li><span class="mono">python -c "import harness; print(harness.__version__)"</span> → <span class="mono">0.1.0</span></li>
+          <li><span class="mono">pip install -e .</span> → package installs clean</li>
+          <li><span class="mono">pytest -q</span> → collects &amp; passes from the project root</li>
         </ul>
       </div>
     </article>
 
     <aside class="checkpoint" id="cp5">
-      <div class="cp-top"><span class="cp-badge">🛑 Checkpoint 05 · Final acceptance</span><span class="cp-when">Gate · after Step 16 — project considered done</span></div>
+      <div class="cp-top"><span class="cp-badge">🛑 Checkpoint 05 · Final acceptance</span><span class="cp-when">Gate · after Step 19 — project considered done</span></div>
       <div class="cp-grid-inner">
         <div>
           <h4>You verify — the finished product</h4>
           <ul class="cp-list">
-            <li>Three validation commands pass cleanly in a fresh shell</li>
+            <li>All five validation commands pass cleanly in a fresh shell</li>
             <li>You poke at <span class="mono">demo/run_demo.py</span>, read <span class="mono">.harness/session.jsonl</span>, run the demo yourself</li>
+            <li><span class="mono">pip install -e .</span> works and <span class="mono">pytest</span> runs from root</li>
             <li>Wording &amp; defaults all feel right in the README and in the code</li>
             <li>Anything to defer → moved to &ldquo;future work&rdquo; consciously, not silently</li>
           </ul>
@@ -502,14 +542,13 @@ h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;font-weight:800;margin-bott
 
   </div><!-- /timeline -->
 </section>
-
 <section class="wrap" id="validate">
-  <h2 class="sec">🚦 The finish line — run these three</h2>
+  <h2 class="sec">🚦 The finish line — run these five</h2>
   <div class="gate">
     <div class="gate-icon">🏁</div>
     <div>
       <b>Every gate approved ⇒ execute the validation battery.</b>
-      <p>All three must exit 0 before handing the project back to you for CP-5.</p>
+      <p>All five must exit 0 before handing the project back to you for CP-5.</p>
     </div>
   </div>
   <pre class="cmd"><span class="c"># 1 · component + integration suite</span>
@@ -519,7 +558,13 @@ python -m unittest discover -s tests -v
 python demo/run_demo.py
 
 <span class="c"># 3 · public API wire check</span>
-python -c "import harness; print(harness.__version__)"</pre>
+python -c "import harness; print(harness.__version__)"
+
+<span class="c"># 4 · packaging installs</span>
+pip install -e .
+
+<span class="c"># 5 · pytest runs from project root</span>
+pytest -q</pre>
 </section>
 
 <section class="wrap">
@@ -527,20 +572,19 @@ python -c "import harness; print(harness.__version__)"</pre>
   <div class="grid-2">
     <div class="outline-card"><b>Deferred — future work</b>
       <ul>
-        <li>Skills compositing layer (markdown skills via hooks)</li>
-        <li>Model-based context summarization swap</li>
+        <li>Model-based context summarization swap (heuristic ships first)</li>
         <li>Streaming · retries · rate limits · prompt caching · token budgets</li>
-        <li>Anthropic / other provider adapters</li>
+        <li>Anthropic / other provider adapters (keep the <span class="mono">Model</span> protocol open)</li>
         <li>Real sandboxing / docker isolation</li>
-        <li><span class="mono">pyproject.toml</span> · packaging · CI</li>
+        <li>Async / non-blocking tool execution · multi-turn state beyond JSONL</li>
+        <li>Web UI / CLI interface · CI pipelines / release tooling</li>
       </ul>
     </div>
-    <div class="outline-card"><b>Why we keep them out</b>
-      <ul>
-        <li>Keep the harness stdlib-only and offline-runnable (0 new deps)</li>
-        <li>Protect the <span class="mono">Model</span> protocol — providers plug in later</li>
-        <li>Heuristic summary ships first; model summary is a drop-in later</li>
-        <li>Nothing out-of-scope is silently skipped — it's recorded, so CP-5 can consciously defer it</li>
+    <div class="outline-card"><b>Now moved in scope — no longer here</b>
+      <ul class="yes">
+        <li>Skills compositing layer (markdown skills) — now Step 12</li>
+        <li><span class="mono">pyproject.toml</span> · <span class="mono">requirements.txt</span> · packaging — now Steps 16–17</li>
+        <li>pytest from root + <span class="mono">pip install -e .</span> — now Phase 5</li>
       </ul>
     </div>
   </div>
@@ -552,8 +596,8 @@ python -c "import harness; print(harness.__version__)"</pre>
 .step-file{font-family:Consolas,"Cascadia Code",Menlo,monospace;font-size:11.5px;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.28);color:#9adcff;border-radius:6px;padding:2px 8px;white-space:nowrap}
 </style>
 <div class="footer-bar">
-  <span>agent_harness-tut2 · implementation blueprint · <b id="year"></b></span>
-  <span>16 steps · 5 checkpoints · stdlib-only · offline-demonstrable</span>
+  <span>agent_harness-tut2 · implementation blueprint · merged plan (PLAN.md + Plan-laguna.md) · <b id="year"></b></span>
+  <span>19 steps · 5 checkpoints · stdlib core · offline-demonstrable</span>
 </div>
 
 <script>
