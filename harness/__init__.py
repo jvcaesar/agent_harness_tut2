@@ -1,16 +1,18 @@
 from harness.context import ContextManager
 from harness.hooks import HookContext, Hooks
+from harness.loop import Harness
 from harness.model import DummyModel, Model, end_turn, tool_call
 from harness.permissions import Permission, can_dispatch, classify_bash
 from harness.persistence import SessionPersistence
 from harness.prompt import assemble_system_prompt
 from harness.subagents import SubAgentRegistry, SubAgentSpec
-from harness.tools import Tool, ToolRegistry
+from harness.tools import Tool, ToolRegistry, register_core_tools
 
 __all__ = [
     "ContextManager",
     "HookContext",
     "Hooks",
+    "Harness",
     "DummyModel",
     "Model",
     "end_turn",
@@ -24,6 +26,7 @@ __all__ = [
     "SubAgentSpec",
     "Tool",
     "ToolRegistry",
+    "register_core_tools",
 ]
 
 __version__ = "0.1.0"

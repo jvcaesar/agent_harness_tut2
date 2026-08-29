@@ -103,29 +103,60 @@ python -m pytest tests -q
 
 **Result:** `0.1.0` and `8 passed in 0.06s`
 
-## Next: Milestone 4
+## Milestone 4: Harness Loop and Tool Dispatch
 
-Implement the main harness loop and tool dispatch behavior.
+**Status:** Complete
 
 ### Scope
 
 - `harness/loop.py`
-  - turn the loose function into a real `Harness` class with a goal-driven `run()` loop
-  - integrate context compaction, model calls, and iteration limits
+  - turned the loose function into a real `Harness` class with a goal-driven `run()` loop
+  - integrated context compaction, model calls, iteration limits, and tool-result feedback
 - `harness/hooks.py`
-  - verify pre/post hook execution and short-circuit deny behavior remains sound
+  - verified pre/post hook execution and short-circuit deny behavior remains sound
 - `harness/tools.py`
-  - integrate tool dispatch, permission gating, and descriptor generation into the harness runtime
+  - added core tool registration and registry support for the dispatch runtime
+- `harness/__init__.py`
+  - exported the `Harness` class as part of the public package API
+
+### Current implementation evidence
+
+- `Harness.run()` now seeds the goal, compacts messages when needed, calls the model, and continues until the model ends the turn or the iteration budget is exhausted.
+- `_dispatch_tool()` resolves tools, enforces the permission gate via `can_dispatch()`, runs pre/post hooks, and persists tool-call events to the session JSONL log.
+- Added `tests/test_milestone4.py` for the end-to-end dispatch cycle and the denial case.
+
+### Required validation
+
+Executed in the activated virtual environment:
+
+```powershell
+python -m pytest tests/test_milestone4.py -q
+python -m pytest tests -q
+```
+
+**Result:** `2 passed` for the Milestone 4 checks and `10 passed in 0.06s` overall.
+
+## Next: Milestone 5
+
+Implement the markdown-driven skill layer and richer tool composition.
+
+### Scope
+
+- `harness/tools.py`
+  - add a `Skill` concept that reads markdown definitions and composes existing primitives into higher-level tool behaviors
+  - expose skill metadata and descriptors so the model can see them as callable tools
+- `harness/loop.py`
+  - ensure the loop can resolve skill-backed tool calls the same way as core built-ins
 
 ### Suggested first actions
 
-1. Inspect the current `Harness` loop scaffold and tool dispatch assumptions in `harness/loop.py`.
-2. Confirm tool registry and permission gate semantics before implementing the dispatch flow.
-3. Add a focused end-to-end loop test that exercises a scripted model and a tool call.
-4. Run the targeted test set inside `.venv` before moving to later milestones.
+1. Inspect the current tool registry and identify the seams where skill metadata should be added.
+2. Add a small skill-registration test that confirms descriptor generation and invocation shape.
+3. Implement the minimal markdown-based `Skill` abstraction and validate it with the targeted suite.
+4. Run the relevant tests inside `.venv` before moving on to the demo milestone.
 
 ### Constraints
 
-- Keep the changes narrow and consistent with the existing harness contracts.
-- Do not begin the skill layer, demo, or packaging milestones until the loop is validated.
-- Preserve the Milestone 1 permission and tool metadata contracts and the Milestone 3 model API.
+- Keep the skill layer minimal and consistent with the existing registry contract.
+- Do not begin the demo or packaging milestones until the tool composition layer is validated.
+- Preserve the existing permission gate, core tool registry, and `Harness` runtime behavior.

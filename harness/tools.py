@@ -5,6 +5,8 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 
+from harness.permissions import Permission
+
 
 @dataclass
 class Tool:
@@ -49,6 +51,12 @@ class ToolRegistry:
         """
         return self._tools.get(name)
 
+    def has(self, name: str) -> bool:
+        return name in self._tools
+
+    def names(self) -> list[str]:
+        return list(self._tools.keys())
+
     def descriptors(self) -> list[dict]:
         """
         Get a list of descriptors for all registered tools.
@@ -57,3 +65,40 @@ class ToolRegistry:
             list: A list of dictionaries containing tool names and descriptions.
         """
         return [{"name": tool.name, "permission": tool.permission, "description": tool.description} for tool in self._tools.values()]
+
+
+def register_core_tools(registry: ToolRegistry | None = None) -> ToolRegistry:
+    from harness.builtins import bash, edit_file, grep, read_file, write_file
+
+    registry = registry or ToolRegistry()
+    registry.register_tool(
+        "read_file",
+        Permission.READ_ONLY,
+        lambda args: read_file(args["path"]),
+        "Read a file from disk.",
+    )
+    registry.register_tool(
+        "grep",
+        Permission.READ_ONLY,
+        lambda args: grep(args["pattern"], args["path"]),
+        "Search for a pattern in a file.",
+    )
+    registry.register_tool(
+        "write_file",
+        Permission.WORKSPACE,
+        lambda args: write_file(args["path"], args["content"]),
+        "Write text to a file.",
+    )
+    registry.register_tool(
+        "edit_file",
+        Permission.WORKSPACE,
+        lambda args: edit_file(args["path"], args["find"], args["replace"]),
+        "Replace text in a file.",
+    )
+    registry.register_tool(
+        "bash",
+        Permission.WORKSPACE,
+        lambda args: bash(args["command"], int(args.get("timeout", 10))),
+        "Run a shell command.",
+    )
+    return registry
