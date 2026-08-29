@@ -1,7 +1,7 @@
 # Primitives for the harness. The non-negotiable five
 # read, write, edit, bash, grep
 
-from zipfile import Path
+from pathlib import Path
 
 
 def read_file(path: str) -> str:
@@ -14,7 +14,7 @@ def read_file(path: str) -> str:
     Returns:
         str: The contents of the file.
     """
-    return Path(path).read_text()
+    return Path(path).read_text(encoding="utf-8")
 
 def edit_file(path: str, find: str, replace: str) -> str:
     """
@@ -28,11 +28,11 @@ def edit_file(path: str, find: str, replace: str) -> str:
     Returns:
         str: A message indicating the result of the edit operation.
     """
-    content = Path(path).read_text()
+    content = Path(path).read_text(encoding="utf-8")
     if find not in content:
         raise ValueError(f"'{find}' not found in {path}")
     new_content = content.replace(find, replace)
-    Path(path).write_text(new_content)
+    Path(path).write_text(new_content, encoding="utf-8")
     return f"Edited {path}: replaced '{find}' with '{replace}'"
 
 def write_file(path: str, content: str) -> str:
@@ -46,7 +46,7 @@ def write_file(path: str, content: str) -> str:
     Returns:
         str: A message indicating the result of the write operation.
     """
-    Path(path).write_text(content)
+    Path(path).write_text(content, encoding="utf-8")
     return f"Wrote to {path}"
 
 def grep(pattern: str, path: str) -> str:
@@ -60,7 +60,7 @@ def grep(pattern: str, path: str) -> str:
     Returns:
         str: The lines containing the pattern, or a message if no matches are found.
     """
-    content = Path(path).read_text()
+    content = Path(path).read_text(encoding="utf-8")
     matches = [line for line in content.splitlines() if pattern in line]
     return "\n".join(matches) if matches else f"No matches for '{pattern}' in {path}"
 

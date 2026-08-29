@@ -1,8 +1,10 @@
 # tool registry - the dispatch table
 # name -> permission -> handler
-# Skills are registred in the same way as tools, but they are not called directly by the model. Instead, they are called by the handlers that read the markdown files at invocation time. 
+# Skills are registred in the same way as tools, but they are not called directly by the model. Instead, they are called by the handlers that read the markdown files at invocation time.
 # Skills are a way to compose tools into higher-level operations.
-from attr import dataclass
+from collections.abc import Callable
+from dataclasses import dataclass
+
 
 @dataclass
 class Tool:
@@ -11,17 +13,19 @@ class Tool:
     """
     name: str  # The name of the tool
     permission: str  # The permission required to use the tool
-    handler: callable  # The function that handles the tool's operation
+    handler: Callable  # The function that handles the tool's operation
     description: str = ""  # A brief description of the tool
-    
+
+
 class ToolRegistry:
     """
     A class to manage the registry of tools, allowing for registration and retrieval of tools.
     """
+
     def __init__(self) -> None:
         self._tools: dict[str, Tool] = {}
 
-    def register_tool(self, name: str, permission: str, handler: callable, description: str = "") -> None:
+    def register_tool(self, name: str, permission: str, handler: Callable, description: str = "") -> None:
         """
         Register a new tool in the registry.
 
@@ -33,7 +37,7 @@ class ToolRegistry:
         """
         self._tools[name] = Tool(name, permission, handler, description)
 
-    def get_tool(self, name: str) -> Tool:
+    def get_tool(self, name: str) -> Tool | None:
         """
         Retrieve a tool by its name.
 

@@ -2,9 +2,8 @@
 # every event, one line, flushed on every write, no buffering, no caching, no reading, no deleting
 # Can also use markdowns
 
+import json
 from pathlib import Path
-
-from streamlit import json
 
 
 class SessionPersistence:
