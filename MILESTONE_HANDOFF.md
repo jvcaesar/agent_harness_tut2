@@ -71,35 +71,61 @@ python -m pytest tests/test_milestone2.py -q
 
 **Result:** `3 passed in 0.11s`
 
-## Next: Milestone 3
+## Milestone 3: Offline Model Contract and Public API
 
-Define an offline model contract and publish the initial package API.
+**Status:** Complete
 
 ### Scope
 
 - `harness/model.py`
-  - add a `DummyModel` that follows the harness response-dictionary contract
+  - added a `DummyModel` that follows the harness response-dictionary contract
+  - added helper response constructors for end-turn and tool-call responses
 - `harness/__init__.py`
-  - expose the intended public API and package version
+  - exposed the intended public API and package version
 - `harness/subagents.py`
-  - confirm registry methods and the `explore`, `general`, and `verify` presets work with the finalized package API
+  - verified the registry methods and the `explore`, `general`, and `verify` presets are compatible with the finalized package API
+
+### Current implementation evidence
+
+- `harness/model.py` now includes a runtime-checkable `Model` protocol, `end_turn()`, `tool_call()`, and `DummyModel` with scripted/policy-based execution.
+- `harness/__init__.py` exports the key harness types and sets `__version__ = "0.1.0"`.
+- The registry in `harness/subagents.py` already preserves `explore`, `general`, and `verify` with the expected permission levels.
+- Added `tests/test_milestone3.py` for package exports, model contract checks, and registry behavior.
 
 ### Required validation
+
+Executed in the activated virtual environment:
 
 ```powershell
 python -c "import harness; print(harness.__version__)"
 python -m pytest tests -q
 ```
 
+**Result:** `0.1.0` and `8 passed in 0.06s`
+
+## Next: Milestone 4
+
+Implement the main harness loop and tool dispatch behavior.
+
+### Scope
+
+- `harness/loop.py`
+  - turn the loose function into a real `Harness` class with a goal-driven `run()` loop
+  - integrate context compaction, model calls, and iteration limits
+- `harness/hooks.py`
+  - verify pre/post hook execution and short-circuit deny behavior remains sound
+- `harness/tools.py`
+  - integrate tool dispatch, permission gating, and descriptor generation into the harness runtime
+
 ### Suggested first actions
 
-1. Inspect the current implementations of the three modules above.
-2. Add focused tests for compaction, JSONL append/replay, and instruction-file discovery.
-3. Make the smallest implementation changes needed for the tests.
-4. Run the targeted tests inside `.venv`.
+1. Inspect the current `Harness` loop scaffold and tool dispatch assumptions in `harness/loop.py`.
+2. Confirm tool registry and permission gate semantics before implementing the dispatch flow.
+3. Add a focused end-to-end loop test that exercises a scripted model and a tool call.
+4. Run the targeted test set inside `.venv` before moving to later milestones.
 
 ### Constraints
 
-- Keep changes minimal and consistent with the existing project style.
-- Do not start the model, loop, demo, or packaging milestones yet.
-- Preserve the Milestone 1 contracts for permissions, tool metadata, and sub-agent presets.
+- Keep the changes narrow and consistent with the existing harness contracts.
+- Do not begin the skill layer, demo, or packaging milestones until the loop is validated.
+- Preserve the Milestone 1 permission and tool metadata contracts and the Milestone 3 model API.
