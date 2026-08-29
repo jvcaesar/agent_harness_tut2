@@ -23,3 +23,4 @@ tests/test_milestone3.py
 tests/test_milestone4.py
 tests/test_milestone5.py
 tests/test_milestone6.py
+tests/test_model_providers.py

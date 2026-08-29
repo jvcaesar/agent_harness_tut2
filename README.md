@@ -6,6 +6,65 @@ https://www.youtube.com/watch?v=nWzXyjXCoCE
 Building a minimal version of harness with python.
 9 components to build an agent harness.
 
+## How to run
+
+Create a virtual environment and install the package with test dependencies:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -e .[dev]
+```
+
+Copy the provider template, then configure one model provider in `.env`:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+To run with Ollama, start Ollama and pull a model, then set these values in `.env`:
+
+```powershell
+ollama pull llama3.1
+ollama serve
+```
+
+```dotenv
+OLLAMA_ENABLED=true
+OLLAMA_MODEL=llama3.1
+```
+
+To run with OpenAI instead, leave `OLLAMA_ENABLED=false` and set:
+
+```dotenv
+OPENAI_API_KEY=your-api-key
+OPENAI_MODEL=gpt-4o-mini
+```
+
+The application loads `.env` automatically from the project root. Start the agent harness with:
+
+```powershell
+python agent.py
+```
+
+The agent prints the selected provider, such as `Active model: OllamaModel (llama3.1)`, then starts an interactive chat. Type `exit`, `bye`, or `quit` to end the session gracefully. Without provider configuration, it uses the offline `DummyModel`.
+
+Ask `What tools do you have?` or `List your tools.` during a chat to have the model invoke the registry-backed `list_tools` tool. The harness exposes `list_tools`, `read_file`, `grep`, `write_file`, `edit_file`, and `bash`, subject to its configured permission level.
+
+### Tool safety
+
+File tools can only access paths inside the harness workspace. Shell commands require `full` permission, run from the workspace directory, and reject recursive deletion, disk-formatting, shutdown, and download-and-execute patterns. Every denial is returned to the model as an explanation, so it can adjust its next action.
+
+### Error handling
+
+The interactive agent translates common provider failures into actionable messages. For example, Ollama connection errors recommend starting `ollama serve`; missing Ollama models recommend the appropriate `ollama pull` command; and OpenAI authentication, timeout, connection, and rate-limit failures explain the next action. A redacted `model_error` event is written to `.harness/session.jsonl` for troubleshooting. Set `HARNESS_DEBUG=true` in `.env` to also display the redacted diagnostic detail in the chat.
+
+Run the test suite with:
+
+```powershell
+python -m pytest -q
+```
+
 ## Project structure
 
 ```text
@@ -75,33 +134,9 @@ When all of the stubs are completed, this project should be able to:
     `tests/test_harness.py` suite that validates every component. An optional `model.py`
     wrapper is expected to hold the LLM client.
 
-### Current status: stubs, not runnable yet
+### Current status
 
-The project is currently a **scaffold of stubs**. Each module sketches the shape and intent of
-its component, but many pieces are incomplete, missing, or intentionally rough, so the harness
-cannot run end-to-end yet:
-
-- `loop.py` - the main loop body is outlined, but there is **no enclosing harness class**; it
-  references `self.context`, `self.model`, `self.tools`, `self._dispatch_tool`, and
-  `self.max_iterations`, none of which are defined anywhere.
-- `context.py` - compaction logic calls `_summarize(...)`, which is **not implemented**, and it
-  imports `dataclass` from `attr` instead of the standard library `dataclasses`.
-- `tools.py` - the registry itself is close to complete, but the skill layer (tools composed
-  from other tools, resolved via markdown files) is not implemented.
-- `subagents.py` - the presets reference `SubAgentSpec` and `Permission`, neither of which is
-  imported; the constant names would also need to match `permissions.py` (`READ_ONLY`, not
-  `READONLY`).
-- `builtins.py` - all five primitives are defined correctly, but `Path` is imported from
-  `zipfile` (line 1) rather than `pathlib`, which fails at import time.
-- `persistence.py` - append/replay logic is written, but `json` is imported from `streamlit`
-  (line 7) instead of the stdlib, introducing an unnecessary third-party dependency.
-- `prompt.py` - `assemble_system_prompt` depends on `STATIC_SCAFFOLD`, `INSTRUCTION_FILES`, and
-  `_walk_ancestors`, none of which are defined in the file yet.
-- `hooks.py` and `permissions.py` are the most complete, self-contained modules.
-
-The `demo/` and `tests/` directories exist but are **empty**, and the `harness` package has no
-`__init__.py` or `model.py` yet. The "project structure" sketch above represents the target
-layout; the immediate work is the `harness/` package itself. Note that the current tree sits at
-the project root rather than under a `build/` folder - either move the package into `build/`
-when the demo runner is wired, or update the structure diagram to match the simpler layout.
+The harness is implemented and runnable. It includes an offline `DummyModel`, a local
+`OllamaModel`, and an `OpenAIModel` selected from environment variables. The example runner,
+demo, and tests exercise the same harness loop and tool-dispatch flow.
 

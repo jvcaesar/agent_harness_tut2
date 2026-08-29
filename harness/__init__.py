@@ -1,7 +1,7 @@
 from harness.context import ContextManager
 from harness.hooks import HookContext, Hooks
 from harness.loop import Harness
-from harness.model import DummyModel, Model, end_turn, tool_call
+from harness.model import DummyModel, Model, OllamaModel, OpenAIModel, build_model_from_env, end_turn, tool_call
 from harness.permissions import Permission, can_dispatch, classify_bash
 from harness.persistence import SessionPersistence
 from harness.prompt import assemble_system_prompt
@@ -14,7 +14,10 @@ __all__ = [
     "Hooks",
     "Harness",
     "DummyModel",
+    "OllamaModel",
+    "OpenAIModel",
     "Model",
+    "build_model_from_env",
     "end_turn",
     "tool_call",
     "Permission",

@@ -18,6 +18,7 @@ class Tool:
     permission: str  # The permission required to use the tool
     handler: Callable  # The function that handles the tool's operation
     description: str = ""  # A brief description of the tool
+    input_schema: dict | None = None
 
 
 @dataclass
@@ -43,7 +44,14 @@ class ToolRegistry:
     def __init__(self) -> None:
         self._tools: dict[str, Tool] = {}
 
-    def register_tool(self, name: str, permission: str, handler: Callable, description: str = "") -> None:
+    def register_tool(
+        self,
+        name: str,
+        permission: str,
+        handler: Callable,
+        description: str = "",
+        input_schema: dict | None = None,
+    ) -> None:
         """
         Register a new tool in the registry.
 
@@ -53,7 +61,7 @@ class ToolRegistry:
             handler (callable): The function that handles the tool's operation.
             description (str, optional): A brief description of the tool. Defaults to "".
         """
-        self._tools[name] = Tool(name, permission, handler, description)
+        self._tools[name] = Tool(name, permission, handler, description, input_schema)
 
     def register_skill(self, name: str, permission: str, source: str, description: str = "") -> None:
         self._tools[name] = Skill(name=name, permission=permission, handler=lambda args: self._tools[name].invoke(args), description=description, source=source)
@@ -83,7 +91,15 @@ class ToolRegistry:
         Returns:
             list: A list of dictionaries containing tool names and descriptions.
         """
-        return [{"name": tool.name, "permission": tool.permission, "description": tool.description} for tool in self._tools.values()]
+        return [
+            {
+                "name": tool.name,
+                "permission": tool.permission,
+                "description": tool.description,
+                "input_schema": tool.input_schema or {"type": "object", "properties": {}},
+            }
+            for tool in self._tools.values()
+        ]
 
 
 def register_core_tools(registry: ToolRegistry | None = None) -> ToolRegistry:
@@ -91,33 +107,47 @@ def register_core_tools(registry: ToolRegistry | None = None) -> ToolRegistry:
 
     registry = registry or ToolRegistry()
     registry.register_tool(
+        "list_tools",
+        Permission.READ_ONLY,
+        lambda args: "\n".join(
+            f"{tool['name']}: {tool['description']} (permission: {tool['permission']})"
+            for tool in registry.descriptors()
+        ),
+        "List the tools available to the agent.",
+    )
+    registry.register_tool(
         "read_file",
         Permission.READ_ONLY,
         lambda args: read_file(args["path"]),
         "Read a file from disk.",
+        {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]},
     )
     registry.register_tool(
         "grep",
         Permission.READ_ONLY,
         lambda args: grep(args["pattern"], args["path"]),
         "Search for a pattern in a file.",
+        {"type": "object", "properties": {"pattern": {"type": "string"}, "path": {"type": "string"}}, "required": ["pattern", "path"]},
     )
     registry.register_tool(
         "write_file",
         Permission.WORKSPACE,
         lambda args: write_file(args["path"], args["content"]),
         "Write text to a file.",
+        {"type": "object", "properties": {"path": {"type": "string"}, "content": {"type": "string"}}, "required": ["path", "content"]},
     )
     registry.register_tool(
         "edit_file",
         Permission.WORKSPACE,
         lambda args: edit_file(args["path"], args["find"], args["replace"]),
         "Replace text in a file.",
+        {"type": "object", "properties": {"path": {"type": "string"}, "find": {"type": "string"}, "replace": {"type": "string"}}, "required": ["path", "find", "replace"]},
     )
     registry.register_tool(
         "bash",
-        Permission.WORKSPACE,
-        lambda args: bash(args["command"], int(args.get("timeout", 10))),
-        "Run a shell command.",
+        Permission.FULL,
+        lambda args: bash(args["command"], int(args.get("timeout", 10)), args.get("cwd")),
+        "Run a shell command with full permission.",
+        {"type": "object", "properties": {"command": {"type": "string"}, "timeout": {"type": "integer"}}, "required": ["command"]},
     )
     return registry

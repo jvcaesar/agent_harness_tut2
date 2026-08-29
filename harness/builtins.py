@@ -64,7 +64,7 @@ def grep(pattern: str, path: str) -> str:
     matches = [line for line in content.splitlines() if pattern in line]
     return "\n".join(matches) if matches else f"No matches for '{pattern}' in {path}"
 
-def bash(command: str, timeout: int = 10) -> str:
+def bash(command: str, timeout: int = 10, cwd: str | Path | None = None) -> str:
     """
     Execute a bash command.
 
@@ -77,7 +77,7 @@ def bash(command: str, timeout: int = 10) -> str:
     """
     import subprocess
     try:
-        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout)
+        result = subprocess.run(command, shell=True, check=True, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout)
         return result.stdout.decode('utf-8')
     except subprocess.CalledProcessError as e:
         return f"Command failed with error: {e.stderr.decode('utf-8')}"
