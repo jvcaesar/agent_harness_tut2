@@ -164,32 +164,64 @@ python -m pytest tests -q
 
 **Result:** `1 passed` for the Milestone 5 check and `11 passed in 0.06s` overall.
 
-## Next: Milestone 6
+## Milestone 6: Demo Project and End-to-End Validation
 
-Build the demo project and end-to-end validation path.
+**Status:** Complete
 
 ### Scope
 
 - `demo/agent.md`
-  - add the agent instructions that the prompt assembly should discover
+  - added the agent instructions that the prompt assembly should discover
 - `demo/claude.md`
-  - add a short behavior file for the spawnable instruction discovery flow
+  - added a short behavior file for the instruction discovery flow
 - `demo/main.py`
-  - create the sample bug and the intended behavior contract
+  - created the sample bug and the intended behavior contract
 - `demo/test_main.py`
-  - validate the bug fix with a unittest suite
+  - validated the bug fix with a unittest suite
 - `demo/run_demo.py`
-  - wire a script that runs the harness against the demo with the offline dummy model
+  - wired an offline script that runs the harness with a `DummyModel` against the demo
+
+### Current implementation evidence
+
+- The demo project is fully present under `demo/` and uses a deterministic offline fix workflow.
+- `run_demo.py` reads the demo file, edits the bug, and runs the target test file end-to-end.
+- Added `tests/test_milestone6.py` to confirm the demo runs and fixes the bug successfully.
+
+### Required validation
+
+Executed in the activated virtual environment:
+
+```powershell
+python -m pytest tests/test_milestone6.py -q
+python -m pytest tests -q
+```
+
+**Result:** `1 passed` for the Milestone 6 check and `12 passed in 0.32s` overall.
+
+## Next: Milestone 7
+
+Finalize packaging, test coverage, and repo readiness for installation.
+
+### Scope
+
+- `requirements.txt`
+  - add the pinned runtime and dev dependencies needed to install and test the harness
+- `pyproject.toml`
+  - add package metadata and discovery configuration so `pip install -e .` works cleanly
+- `tests/test_harness.py`
+  - add the final high-level test suite covering the harness behaviors in a package-ready shape
+- `README.md`
+  - update the documentation so it reflects the actual implementation and milestone status
 
 ### Suggested first actions
 
-1. Create the demo target files and a deliberate bug in the sample function.
-2. Add the corresponding unittests and confirm they fail before the fix.
-3. Wire `run_demo.py` to use `Harness` with a `DummyModel`.
-4. Run the demo and the relevant tests inside `.venv` before moving to packaging.
+1. Add the minimal package metadata and installable configuration.
+2. Create the final project-level test suite and confirm it passes in the venv.
+3. Validate `pip install -e .` and ensure the package imports cleanly.
+4. Update the README to reflect the completed milestones and final repo state.
 
 ### Constraints
 
-- Keep the demo offline and deterministic.
-- Do not begin the packaging milestone until the end-to-end demo is validated.
-- Preserve the existing harness, tool, permissions, and skill contracts.
+- Keep the final packaging work minimal and focused on installability and validation.
+- Do not expand beyond the current harness scope.
+- Preserve the harness, demo, and skill contracts validated in earlier milestones.
