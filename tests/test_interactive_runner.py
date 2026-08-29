@@ -1,6 +1,6 @@
 from harness import Harness
 from harness.model import DummyModel, OllamaModel, end_turn
-from agent import format_model_error, run_interactive_chat
+from agent import TerminalFormatter, format_model_error, run_interactive_chat
 
 
 def test_interactive_chat_prints_response_and_exits(tmp_path):
@@ -35,7 +35,7 @@ def test_interactive_chat_formats_and_persists_model_errors(tmp_path):
 
     run_interactive_chat(harness, input_fn=lambda _: next(inputs), output_fn=output.append)
 
-    assert output == ["AI response failed unexpectedly. Try again, or set HARNESS_DEBUG=true to see diagnostic details.", "Goodbye."]
+    assert output == ["AI error: AI response failed unexpectedly. Try again, or set HARNESS_DEBUG=true to see diagnostic details.", "Goodbye."]
     event = harness.persistence.replay()[0]
     assert event["event"] == "model_error"
     assert "sk-secret" not in event["detail"]
@@ -47,3 +47,11 @@ def test_format_model_error_explains_ollama_connection_failure():
     message = format_model_error(RuntimeError("connection refused"), model)
 
     assert message == "AI is unavailable: Ollama could not be reached at http://localhost:11434. Start Ollama with `ollama serve`, then try again."
+
+
+def test_terminal_formatter_has_plain_text_fallback():
+    formatter = TerminalFormatter(color=False)
+
+    assert formatter.prompt() == "You> "
+    assert formatter.response("Hello") == "AI> Hello"
+    assert formatter.error("Failed") == "AI error: Failed"

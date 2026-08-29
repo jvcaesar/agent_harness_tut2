@@ -49,6 +49,24 @@ def write_file(path: str, content: str) -> str:
     Path(path).write_text(content, encoding="utf-8")
     return f"Wrote to {path}"
 
+def list_dir(path: str = ".") -> str:
+    """
+    List the entries of a directory.
+
+    Args:
+        path (str): The directory to list. Defaults to the current directory.
+
+    Returns:
+        str: One entry per line, directories suffixed with '/', or a message if empty/not a directory.
+    """
+    directory = Path(path)
+    if not directory.is_dir():
+        return f"Not a directory: {path}"
+    entries = sorted(directory.iterdir(), key=lambda entry: entry.name)
+    if not entries:
+        return f"{path} is empty"
+    return "\n".join(entry.name + "/" if entry.is_dir() else entry.name for entry in entries)
+
 def grep(pattern: str, path: str) -> str:
     """
     Search for a pattern in a file.

@@ -1,0 +1,10 @@
+This is a file I'm putting my notes and observations in as I run and test the agent.
+
+Feature requests:
+* An agent explainer to know what it's doing behind the scene. Like it's reasoning, actions, etc.
+* I should put a context cleaner, so the whole history and interactions is not being sent to the model for every user query. Send the history if it's relevant to the user query, or parts of it or none of it.
+* If I tell the agent my name and give it a name as well, then it could use that info in the query, response instead of using "you" and "AI" for the input and response.
+* There is no verifier or reviewer of the model's answer. The model goes through max 10 iterations and stops abruptly when the limit is hit. It could have a more relevant and user friendly answer based on what it has done until that point. And also make suggestions how to proceed to solve the user query if it's incomplete or not answered.
+* Can the output to terminal have user friendly colors or other formatting possibilities to make it visually appealing.
+* (This may need a good model, or I have to be very specific in the ask and verify it.)Can I make the agent do changes to its own code. 
+    - Kill itself and restart with the same session hstory?

@@ -103,7 +103,7 @@ class ToolRegistry:
 
 
 def register_core_tools(registry: ToolRegistry | None = None) -> ToolRegistry:
-    from harness.builtins import bash, edit_file, grep, read_file, write_file
+    from harness.builtins import bash, edit_file, grep, list_dir, read_file, write_file
 
     registry = registry or ToolRegistry()
     registry.register_tool(
@@ -128,6 +128,13 @@ def register_core_tools(registry: ToolRegistry | None = None) -> ToolRegistry:
         lambda args: grep(args["pattern"], args["path"]),
         "Search for a pattern in a file.",
         {"type": "object", "properties": {"pattern": {"type": "string"}, "path": {"type": "string"}}, "required": ["pattern", "path"]},
+    )
+    registry.register_tool(
+        "list_dir",
+        Permission.READ_ONLY,
+        lambda args: list_dir(args.get("path", ".")),
+        "List the files and subdirectories in a directory.",
+        {"type": "object", "properties": {"path": {"type": "string"}}, "required": []},
     )
     registry.register_tool(
         "write_file",

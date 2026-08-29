@@ -24,6 +24,8 @@ class Harness:
         hooks: Hooks | None = None,
         persistence: SessionPersistence | None = None,
         permission: str = Permission.WORKSPACE,
+        user_name: str | None = None,
+        agent_name: str | None = None,
     ) -> None:
         self.model = model
         self.cwd = Path(cwd or ".").resolve()
@@ -33,6 +35,8 @@ class Harness:
         self.hooks = hooks or Hooks()
         self.persistence = persistence or SessionPersistence(self.cwd / ".harness" / "session.jsonl")
         self.permission = permission
+        self.user_name = user_name
+        self.agent_name = agent_name
 
     def run(self, goal: str) -> str:
         """
@@ -44,13 +48,13 @@ class Harness:
         Returns:
             str: The result of the loop.
         """
-        system_prompt = assemble_system_prompt(self.cwd)
+        system_prompt = assemble_system_prompt(self.cwd, user_name=self.user_name, agent_name=self.agent_name)
         messages = [{"role": "user", "content": goal}]
         return self.run_turn(messages, system_prompt=system_prompt)
 
     def run_turn(self, messages: list[dict], system_prompt: str | None = None) -> str:
         """Process one model turn using the supplied conversation history."""
-        system_prompt = system_prompt or assemble_system_prompt(self.cwd)
+        system_prompt = system_prompt or assemble_system_prompt(self.cwd, user_name=self.user_name, agent_name=self.agent_name)
         result = ""
 
         for _ in range(1, self.max_iterations + 1):

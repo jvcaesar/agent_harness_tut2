@@ -49,6 +49,8 @@ python agent.py
 
 The agent prints the selected provider, such as `Active model: OllamaModel (llama3.1)`, then starts an interactive chat. Type `exit`, `bye`, or `quit` to end the session gracefully. Without provider configuration, it uses the offline `DummyModel`.
 
+When the terminal supports ANSI colors, the prompt, model responses, informational messages, and errors use distinct colors. Set `NO_COLOR=1` in `.env` or redirect output to use plain text.
+
 Ask `What tools do you have?` or `List your tools.` during a chat to have the model invoke the registry-backed `list_tools` tool. The harness exposes `list_tools`, `read_file`, `grep`, `write_file`, `edit_file`, and `bash`, subject to its configured permission level.
 
 ### Tool safety

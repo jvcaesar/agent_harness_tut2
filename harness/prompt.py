@@ -23,11 +23,20 @@ def assemble_system_prompt(
     cwd: str | Path,
     max_per_file: int = 4_000,
     max_total: int = 20_000,
+    user_name: str | None = None,
+    agent_name: str | None = None,
     ) -> str:
     """
     Assemble the system prompt for the model by combining static and dynamic components.
     """
     parts: list[str] = [STATIC_SCAFFOLD]
+    if user_name or agent_name:
+        identity = []
+        if agent_name:
+            identity.append(f"Your name is {agent_name}; refer to yourself by that name instead of \"AI\".")
+        if user_name:
+            identity.append(f"The user's name is {user_name}; address them by that name instead of \"you\" where natural.")
+        parts.append(" ".join(identity))
     # Static scaffold
     total_dynamic_length = 0
     for directory in _walk_ancestors(Path(cwd)):
