@@ -37,9 +37,11 @@ cd "c:\MyCodeJunk\LearningAi\AI-agents\agent_harness-tut2"
 
 **Result:** `OK`
 
-## Next: Milestone 2
+## Milestone 2: Context Compaction, JSONL Persistence, Prompt Assembly
 
 Implement context compaction, JSONL persistence, and system prompt assembly.
+
+**Status:** Complete
 
 ### Scope
 
@@ -49,8 +51,45 @@ Implement context compaction, JSONL persistence, and system prompt assembly.
 - `harness/persistence.py`
   - verify append-only JSONL writes, flush behavior, and replay
 - `harness/prompt.py`
-  - implement missing `STATIC_SCAFFOLD`, `INSTRUCTION_FILES`, and ancestor-walking helper
-  - assemble a static prompt plus discovered instruction files
+  - added `STATIC_SCAFFOLD`, `INSTRUCTION_FILES`, and the ancestor-walking helper
+  - now assembles the static prompt plus discovered instruction files
+
+### Current implementation evidence
+
+- `harness/context.py` already has summary compaction that preserves configured recent messages.
+- `harness/persistence.py` already has append-only JSONL writes with replay.
+- Added `tests/test_milestone2.py` for context compaction, JSONL append/replay, and instruction-file discovery.
+- `harness/prompt.py` and `tests/test_milestone2.py` have no editor diagnostics.
+
+### Required validation
+
+Executed in the activated virtual environment:
+
+```powershell
+python -m pytest tests/test_milestone2.py -q
+```
+
+**Result:** `3 passed in 0.11s`
+
+## Next: Milestone 3
+
+Define an offline model contract and publish the initial package API.
+
+### Scope
+
+- `harness/model.py`
+  - add a `DummyModel` that follows the harness response-dictionary contract
+- `harness/__init__.py`
+  - expose the intended public API and package version
+- `harness/subagents.py`
+  - confirm registry methods and the `explore`, `general`, and `verify` presets work with the finalized package API
+
+### Required validation
+
+```powershell
+python -c "import harness; print(harness.__version__)"
+python -m pytest tests -q
+```
 
 ### Suggested first actions
 

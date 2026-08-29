@@ -4,6 +4,21 @@
 
 from pathlib import Path
 
+
+STATIC_SCAFFOLD = """You are a helpful software engineering agent.
+Use the available tools carefully, respect their permission requirements, and report results clearly."""
+INSTRUCTION_FILES = ("AGENTS.md", "CLAUDE.md", "agent.md", "claude.md")
+
+
+def _walk_ancestors(path: Path):
+    current = path.resolve()
+    while True:
+        yield current
+        if current.parent == current:
+            return
+        current = current.parent
+
+
 def assemble_system_prompt(
     cwd: str | Path,
     max_per_file: int = 4_000,
