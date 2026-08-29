@@ -136,27 +136,60 @@ python -m pytest tests -q
 
 **Result:** `2 passed` for the Milestone 4 checks and `10 passed in 0.06s` overall.
 
-## Next: Milestone 5
+## Milestone 5: Markdown Skill Layer
 
-Implement the markdown-driven skill layer and richer tool composition.
+**Status:** Complete
 
 ### Scope
 
 - `harness/tools.py`
-  - add a `Skill` concept that reads markdown definitions and composes existing primitives into higher-level tool behaviors
-  - expose skill metadata and descriptors so the model can see them as callable tools
-- `harness/loop.py`
-  - ensure the loop can resolve skill-backed tool calls the same way as core built-ins
+  - added a minimal `Skill` abstraction for markdown-backed tool composition
+  - exposed `register_skill()` and source-backed `invoke()` behavior
+  - kept the registry contract consistent with existing tool descriptors
+
+### Current implementation evidence
+
+- The tool registry now supports markdown-based skill registration alongside core built-ins.
+- `Skill.invoke()` resolves the markdown file content at runtime and returns the source text for the model/tool chain.
+- Added `tests/test_milestone5.py` for skill registration, descriptor exposure, and invocation.
+
+### Required validation
+
+Executed in the activated virtual environment:
+
+```powershell
+python -m pytest tests/test_milestone5.py -q
+python -m pytest tests -q
+```
+
+**Result:** `1 passed` for the Milestone 5 check and `11 passed in 0.06s` overall.
+
+## Next: Milestone 6
+
+Build the demo project and end-to-end validation path.
+
+### Scope
+
+- `demo/agent.md`
+  - add the agent instructions that the prompt assembly should discover
+- `demo/claude.md`
+  - add a short behavior file for the spawnable instruction discovery flow
+- `demo/main.py`
+  - create the sample bug and the intended behavior contract
+- `demo/test_main.py`
+  - validate the bug fix with a unittest suite
+- `demo/run_demo.py`
+  - wire a script that runs the harness against the demo with the offline dummy model
 
 ### Suggested first actions
 
-1. Inspect the current tool registry and identify the seams where skill metadata should be added.
-2. Add a small skill-registration test that confirms descriptor generation and invocation shape.
-3. Implement the minimal markdown-based `Skill` abstraction and validate it with the targeted suite.
-4. Run the relevant tests inside `.venv` before moving on to the demo milestone.
+1. Create the demo target files and a deliberate bug in the sample function.
+2. Add the corresponding unittests and confirm they fail before the fix.
+3. Wire `run_demo.py` to use `Harness` with a `DummyModel`.
+4. Run the demo and the relevant tests inside `.venv` before moving to packaging.
 
 ### Constraints
 
-- Keep the skill layer minimal and consistent with the existing registry contract.
-- Do not begin the demo or packaging milestones until the tool composition layer is validated.
-- Preserve the existing permission gate, core tool registry, and `Harness` runtime behavior.
+- Keep the demo offline and deterministic.
+- Do not begin the packaging milestone until the end-to-end demo is validated.
+- Preserve the existing harness, tool, permissions, and skill contracts.

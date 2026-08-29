@@ -4,6 +4,7 @@
 # Skills are a way to compose tools into higher-level operations.
 from collections.abc import Callable
 from dataclasses import dataclass
+from pathlib import Path
 
 from harness.permissions import Permission
 
@@ -17,6 +18,21 @@ class Tool:
     permission: str  # The permission required to use the tool
     handler: Callable  # The function that handles the tool's operation
     description: str = ""  # A brief description of the tool
+
+
+@dataclass
+class Skill(Tool):
+    """A markdown-backed skill that resolves its body at invocation time."""
+    source: str = ""
+
+    def invoke(self, args: dict) -> str:
+        if not self.source:
+            return ""
+        path = Path(self.source)
+        if not path.exists():
+            return f"Skill source not found: {self.source}"
+        text = path.read_text(encoding="utf-8")
+        return text.strip() or ""
 
 
 class ToolRegistry:
@@ -38,6 +54,9 @@ class ToolRegistry:
             description (str, optional): A brief description of the tool. Defaults to "".
         """
         self._tools[name] = Tool(name, permission, handler, description)
+
+    def register_skill(self, name: str, permission: str, source: str, description: str = "") -> None:
+        self._tools[name] = Skill(name=name, permission=permission, handler=lambda args: self._tools[name].invoke(args), description=description, source=source)
 
     def get_tool(self, name: str) -> Tool | None:
         """
